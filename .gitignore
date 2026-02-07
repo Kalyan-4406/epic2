@@ -1,0 +1,88 @@
+# ===============================
+# Python
+# ===============================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.Python
+
+# Virtual environments
+venv/
+.env/
+.envrc
+.venv/
+
+# ===============================
+# Packaging / Build
+# ===============================
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# ===============================
+# IDE / Editor
+# ===============================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ===============================
+# OS Files
+# ===============================
+.DS_Store
+Thumbs.db
+
+# ===============================
+# Logs
+# ===============================
+*.log
+
+# ===============================
+# Runtime / Temp
+# ===============================
+tmp/
+temp/
+
+# ===============================
+# Input Files (EPIC-1)
+# ===============================
+# Ignore local mock input
+input/impact_report.json
+
+# ===============================
+# Generated Documentation
+# ===============================
+# Ignore generated docs unless explicitly committing
+artifacts/**/*.svg
+artifacts/**/*.png
+
+# ===============================
+# CI Secrets
+# ===============================
+*.pem
+*.key
+*.crt
+.env.local
+.env.production
+
+# ===============================
+# Coverage / Test Reports
+# ===============================
+.coverage
+htmlcov/
+.pytest_cache/
+
+# ===============================
+# Node / Mermaid CLI (if installed)
+# ===============================
+node_modules/
+
+# ===============================
+# GitHub Actions Artifacts
+# ===============================
+*.zip
+*.tar.gz
