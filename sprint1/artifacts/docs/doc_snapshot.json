@@ -1,0 +1,12 @@
+{
+  "commit": "abc123",
+  "generated_at": "2026-02-07T10:18:50.662806",
+  "files_generated": [
+    "README.generated.md",
+    "api-reference.md",
+    "ADR-001.md",
+    "system.mmd",
+    "sequence.mmd",
+    "er.mmd"
+  ]
+}

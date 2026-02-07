@@ -1,0 +1,24 @@
+{
+    "context": {
+        "repository": "sample-repo",
+        "branch": "main",
+        "commit_sha": "abc123",
+        "author": "Test User"
+    },
+    "analysis_summary": {
+        "highest_severity": "MINOR",
+        "breaking_changes_detected": false
+    },
+    "changes": [
+        {
+            "file": "src/app.py",
+            "language": "python",
+            "features": {
+                "api_endpoints": [
+                    "/api/login",
+                    "/api/logout"
+                ]
+            }
+        }
+    ]
+}
