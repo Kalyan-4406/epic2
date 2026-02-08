@@ -64,11 +64,12 @@ jobs:
           git push
         fi
 
+   # 8️⃣ Sync Docs to Cloudflare R2
     - name: Sync Docs to Cloudflare R2
       if: github.event_name == 'push'
       uses: jakejarvis/s3-sync-action@master
       with:
-        args: --follow-symbols --delete
+        args: --delete
       env:
         SOURCE_DIR: 'sprint1/artifacts/docs'
         AWS_S3_BUCKET: ${{ secrets.R2_BUCKET_NAME }}
