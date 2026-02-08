@@ -1,61 +1,98 @@
+#!/usr/bin/env python3
+"""
+Documentation Snapshot Writer
+Creates JSON metadata about generated documentation
+"""
 import json
-import uuid
 from datetime import datetime
-from pathlib import Path
 
-
-def write_snapshot(impact_report: dict) -> str:
+def write_snapshot(report):
     """
-    Generate EPIC-2 Sprint-1 documentation snapshot JSON
+    Create a JSON snapshot of the documentation generation
+    
+    Args:
+        report (dict): Impact report from EPIC-1
+    
+    Returns:
+        str: JSON string containing snapshot metadata
     """
-
-    repo_name = impact_report["context"]["repository"]
-    branch = impact_report["context"]["branch"]
-    commit = impact_report["context"]["commit_sha"]
-
+    context = report.get("context", {})
+    analysis = report.get("analysis_summary", {})
+    changes = report.get("changes", [])
+    
+    # Build comprehensive snapshot
     snapshot = {
-        "snapshot_id": str(uuid.uuid4()),
-        "repo": {
-            "name": repo_name,
-            "branch": branch,
-            "commit": commit
+        "metadata": {
+            "generated_at": datetime.utcnow().isoformat() + "Z",
+            "generator": "EPIC-2 Documentation Pipeline",
+            "version": "1.0.0"
         },
-        "generated_at": datetime.utcnow().isoformat() + "Z",
-        "docs_bucket_path": f"s3://ci-living-docs/{repo_name}/sprint1/{commit}/",
+        "repository": {
+            "name": context.get("repository", "unknown"),
+            "branch": context.get("branch", "main"),
+            "commit_sha": context.get("commit_sha", "unknown"),
+            "author": context.get("author", "unknown")
+        },
+        "analysis": {
+            "severity": analysis.get("highest_severity", "UNKNOWN"),
+            "breaking_changes": analysis.get("breaking_changes_detected", False),
+            "files_changed": len(changes)
+        },
         "generated_files": [
             {
-                "file": "README.generated.md",
-                "type": "README"
+                "path": "README.generated.md",
+                "type": "markdown",
+                "description": "Auto-generated repository README"
             },
             {
-                "file": "api/api-reference.md",
-                "type": "API_DOC"
+                "path": "api/api-reference.md",
+                "type": "markdown",
+                "description": "API endpoint documentation"
             },
             {
-                "file": "adr/ADR-001.md",
-                "type": "ADR"
+                "path": "adr/ADR-001.md",
+                "type": "markdown",
+                "description": "Architecture Decision Record"
             },
             {
-                "file": "architecture/system.mmd",
-                "type": "ARCHITECTURE_DIAGRAM"
+                "path": "architecture/system.mmd",
+                "type": "mermaid",
+                "description": "System architecture diagram"
             },
             {
-                "file": "architecture/sequence.mmd",
-                "type": "SEQUENCE_DIAGRAM"
+                "path": "architecture/sequence.mmd",
+                "type": "mermaid",
+                "description": "Process sequence diagram"
             },
             {
-                "file": "architecture/er.mmd",
-                "type": "ER_DIAGRAM"
+                "path": "architecture/er.mmd",
+                "type": "mermaid",
+                "description": "Entity-relationship diagram"
             },
             {
-                "file": "tree.txt",
-                "type": "FOLDER_STRUCTURE"
+                "path": "tree.txt",
+                "type": "text",
+                "description": "Hierarchical file tree"
+            },
+            {
+                "path": "doc_snapshot.json",
+                "type": "json",
+                "description": "Documentation generation metadata"
             }
         ],
-        "documentation_health": {
-            "missing_sections": [],
-            "template_followed": True
-        }
+        "statistics": {
+            "total_files": len(changes),
+            "total_documents": 8,
+            "diagram_count": 3
+        },
+        "changed_files": [
+            {
+                "path": change.get("file", "unknown"),
+                "language": change.get("language", "unknown"),
+                "severity": change.get("severity", "UNKNOWN")
+            }
+            for change in changes
+        ]
     }
-
-    return json.dumps(snapshot, indent=2)
+    
+    return json.dumps(snapshot, indent=2, ensure_ascii=False)
